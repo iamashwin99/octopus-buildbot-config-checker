@@ -11,10 +11,19 @@ def get_config_h(build_url:str)->str:
     """
     Return the contents of the config.h file from the buildbot
 
-    Assuming build_url is of the form:
-    builder_url = "https://www.octopus-code.org/buildbot/#/builders/144/builds/194"
-    return the contents of the config.h file
-    by first finding the buildid then the stepid then the logid
+    Args:
+        build_url (str): The URL of the build in the buildbot.
+
+    Returns:
+        str: The contents of the config.h file.
+
+    Raises:
+        None
+
+    Example Usage:
+        build_url = "https://www.octopus-code.org/buildbot/#/builders/144/builds/194"
+        config_h = get_config_h(build_url)
+        print(config_h)
     """
     # get builders_id and builds_id
     # match for the pattern: builders/144 from that get the 144 for builders_id
@@ -43,6 +52,27 @@ def get_config_h(build_url:str)->str:
 
 
 def get_diff(str_old:str, str_new:str,str_old_name="old",str_new_name="new"):
+    """
+    Generate a unified diff between two strings.
+
+    Args:
+        str_old (str): The old version of the string.
+        str_new (str): The new version of the string.
+        str_old_name (str, optional): The name of the old string. Defaults to "old".
+        str_new_name (str, optional): The name of the new string. Defaults to "new".
+
+    Returns:
+        str: The unified diff between the two strings.
+
+    Raises:
+        None
+
+    Example Usage:
+        str_old = "Hello, world!"
+        str_new = "Hello, Python!"
+        diff = get_diff(str_old, str_new)
+        print(diff)
+    """
     diff = difflib.unified_diff(
                 str_old.split("\n"),
                 str_new.split("\n"),
@@ -63,6 +93,27 @@ def get_diff(str_old:str, str_new:str,str_old_name="old",str_new_name="new"):
     return diffy_body
 
 def get_config_h_diff(build_url1:str,build_url2:str,build_url1_name="old",build_url2_name="new"):
+    """
+    Generate a unified diff between two versions of the config.h file.
+
+    Args:
+        build_url1 (str): The URL of the first build in the buildbot.
+        build_url2 (str): The URL of the second build in the buildbot.
+        build_url1_name (str, optional): The name of the first build URL. Defaults to "old".
+        build_url2_name (str, optional): The name of the second build URL. Defaults to "new".
+
+    Returns:
+        str: The unified diff between the two versions of the config.h file.
+
+    Raises:
+        None
+
+    Example Usage:
+        build_url1 = "https://www.octopus-code.org/buildbot/#/builders/144/builds/194"
+        build_url2 = "https://www.octopus-code.org/buildbot/#/builders/144/builds/195"
+        diff = get_config_h_diff(build_url1, build_url2)
+        print(diff)
+    """
     config_h1 = get_config_h(build_url1)
     config_h2 = get_config_h(build_url2)
     return get_diff(config_h1,config_h2,build_url1_name,build_url2_name)
