@@ -61,3 +61,8 @@ def get_diff(str_old:str, str_new:str,str_old_name="old",str_new_name="new"):
     )
 
     return diffy_body
+
+def get_config_h_diff(build_url1:str,build_url2:str,build_url1_name="old",build_url2_name="new"):
+    config_h1 = get_config_h(build_url1)
+    config_h2 = get_config_h(build_url2)
+    return get_diff(config_h1,config_h2,build_url1_name,build_url2_name)
