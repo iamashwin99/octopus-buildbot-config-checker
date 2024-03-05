@@ -4,30 +4,40 @@ from rich.markdown import Markdown
 from rich import print as rprint
 import difflib
 
-# Take input of thw two urls and optionally the file names (default left and right)
-# then print the diffs in the screen
+# Set page configuration
 st.set_page_config(page_title="Config Diff", page_icon=":smiley:", layout="wide")
-st.title("Config Diff")
-st.write("This is a simple app to compare two config.h files from buildbot runs")
-st.write("Please enter the urls of the two config.h files to compare")
-st.write("eg https://www.octopus-code.org/buildbot/#/builders/203/builds/13")
 
+# Display title and description
+st.title("Octopus Buildbot Config Checker")
+st.write("This is a simple app to compare two `config.h` files from Octopus buildbot runs.")
+st.write("- [Octopus Buildbot](https://www.octopus-code.org/buildbot)")
+st.write("- [Octopus-code](https://www.octopus-code.org)")
+st.write("Please enter the URLs of the two `config.h` files to compare.")
+
+# Display example URLs
+st.write("Example URLs:")
+st.write("- [Builder 1](https://www.octopus-code.org/buildbot/#/builders/5/builds/611)")
+st.write("- [Builder 2](https://www.octopus-code.org/buildbot/#/builders/203/builds/13)")
+st.write("Click the 'Compare' button to compare the two files.")
+
+# Get user input for URLs and builder names
 cols = st.columns(2)
 col1, col2 = cols
 with col1:
-    url1 = st.text_input("Enter the url of the first config.h file", value="https://www.octopus-code.org/buildbot/#/builders/5/builds/611")
+    url1 = st.text_input("Enter the URL of the first `config.h` file", value="https://www.octopus-code.org/buildbot/#/builders/5/builds/611")
     name1 = st.text_input("Builder name", value="EB")
 with col2:
-    url2 = st.text_input("Enter the url of the second config.h file", value="https://www.octopus-code.org/buildbot/#/builders/203/builds/13")
+    url2 = st.text_input("Enter the URL of the second `config.h` file", value="https://www.octopus-code.org/buildbot/#/builders/203/builds/13")
     name2 = st.text_input("Builder name", value="SPACK")
 
+# Compare the two files when the "Compare" button is clicked
 if st.button("Compare"):
-    # Display a spinning wheel while comparing the two files
+    # Display a spinning wheel while fetching the two files
     with st.spinner("Fetching the two files.."):
-
         config_h1 = get_config_h(url1)
         config_h2 = get_config_h(url2)
 
+    # Compare the two files and display the differences
     with st.spinner("Comparing the two files.."):
         st.write("Comparing the two files")
         diff = difflib.unified_diff(
