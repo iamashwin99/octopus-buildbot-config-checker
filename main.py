@@ -16,12 +16,12 @@ st.write("- [Octopus Buildbot](https://www.octopus-code.org/buildbot)")
 st.write("- [Octopus-code](https://www.octopus-code.org)")
 st.write("Please enter the URLs of the two `config.h` files to compare.")
 
-# Display example URLs
-st.write("Example URLs:")
-st.write("- [Builder 1](https://www.octopus-code.org/buildbot/#/builders/5/builds/611)")
-st.write(
-    "- [Builder 2](https://www.octopus-code.org/buildbot/#/builders/203/builds/13)"
-)
+# # Display example URLs
+# st.write("Example URLs:")
+# st.write("- [Builder 1](https://www.octopus-code.org/buildbot/#/builders/5/builds/611)")
+# st.write(
+#     "- [Builder 2](https://www.octopus-code.org/buildbot/#/builders/203/builds/13)"
+# )
 st.write("Click the 'Compare' button to compare the two files.")
 st.write(" You can also pass the URLs as query parameters in the URL. For example:")
 st.write(
@@ -29,29 +29,37 @@ st.write(
 )
 st.info("Note: The `#` directory in the URLs have been removed.")
 st.write("# Inputs")
+
 # Get user input for URLs and builder names
+
+params_set = st.query_params.get("url1") or st.query_params.get("url2")
+url1 = st.query_params.get(
+    "url1", "https://www.octopus-code.org/buildbot/#/builders/5/builds/611"
+)
+url2 = st.query_params.get(
+    "url2", "https://www.octopus-code.org/buildbot/#/builders/203/builds/13"
+)
+name1 = st.query_params.get("name1", "EB")
+name2 = st.query_params.get("name2", "SPACK")
+
+
+# Display user input fields
 cols = st.columns(2)
 col1, col2 = cols
+# Show warning if defaults are loaded from URL parameters
+if params_set:
+    st.warning("Defaults loaded from URL parameters.")
+    # Display a spinning wheel while fetching the two files
 with col1:
-    url1 = st.text_input(
-        "Enter the URL of the first `config.h` file",
-        value=st.query_params.get(
-            "url1", "https://www.octopus-code.org/buildbot/#/builders/5/builds/611"
-        ),
-    )
-    name1 = st.text_input("Builder name", value=st.query_params.get("name1", "EB"))
+    url1 = st.text_input("Enter the URL of the first `config.h` file", value=url1)
+    name1 = st.text_input("Builder name", value=name1)
 with col2:
-    url2 = st.text_input(
-        "Enter the URL of the second `config.h` file",
-        value=st.query_params.get(
-            "url2", "https://www.octopus-code.org/buildbot/#/builders/203/builds/13"
-        ),
-    )
-    name2 = st.text_input("Builder name", value=st.query_params.get("name2", "SPACK"))
+    url2 = st.text_input("Enter the URL of the second `config.h` file", value=url2)
+    name2 = st.text_input("Builder name", value=name2)
 
 # Compare the two files when the "Compare" button is clicked
 if st.button("Compare"):
-    # Display a spinning wheel while fetching the two files
+
     with st.spinner("Fetching the two files.."):
         config_h1 = get_config_h(url1)
         config_h2 = get_config_h(url2)
