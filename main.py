@@ -58,7 +58,7 @@ with col2:
     name2 = st.text_input("Builder name", value=name2)
 
 # Compare the two files when the "Compare" button is clicked
-if st.button("Compare"):
+if st.button("Compare") or params_set:
 
     with st.spinner("Fetching the two files.."):
         config_h1 = get_config_h(url1)
