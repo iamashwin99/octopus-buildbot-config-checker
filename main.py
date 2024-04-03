@@ -84,5 +84,5 @@ if st.button("Compare") or params_set:
 
     st.write("Displaying the differences")
     # st.markdown(diffy_body)
-    st.code(diffy, language="python", line_numbers=True)
+    st.code(diffy.strip(), language="diff", line_numbers=True)
     st.write("Done")
