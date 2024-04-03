@@ -63,7 +63,11 @@ if st.button("Compare") or params_set:
 
     # write the url of the webapp with params that can be shared
     st.write("You can share this result via url:")
-    st.code(f"{web_url}?url1={url1.replace("#" , '')}&url2={url2.replace("#" , '')}&name1={name1}&name2={name2}")
+    st.code(
+        f"{web_url}?url1={url1.replace('#', '')}"
+        f"&url2={url2.replace('#', '')}"
+        f"&name1={name1}&name2={name2}"
+    )
 
     with st.spinner("Fetching the two files.."):
         config_h1 = get_config_h(url1)
