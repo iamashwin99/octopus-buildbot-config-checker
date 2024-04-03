@@ -6,7 +6,7 @@ import difflib
 
 # Set page configuration
 st.set_page_config(page_title="Config Diff", page_icon=":smiley:", layout="wide")
-
+web_url="http://octopus-config-checker.streamlit.app/"
 # Display title and description
 st.title("Octopus Buildbot Config Checker")
 st.write(
@@ -51,14 +51,18 @@ if params_set:
     st.warning("Defaults loaded from URL parameters.")
     # Display a spinning wheel while fetching the two files
 with col1:
-    url1 = st.text_input("Enter the URL of the first `config.h` file", value=url1)
+    url1 = st.text_input("Enter the builder URL of the first `config.h` file", value=url1)
     name1 = st.text_input("Builder name", value=name1)
 with col2:
-    url2 = st.text_input("Enter the URL of the second `config.h` file", value=url2)
+    url2 = st.text_input("Enter the builder URL of the second `config.h` file", value=url2)
     name2 = st.text_input("Builder name", value=name2)
 
 # Compare the two files when the "Compare" button is clicked
 if st.button("Compare") or params_set:
+
+    # write the url of the webapp with params that can be shared
+    st.write("You can share this result via url:")
+    st.code(f"{web_url}?url1={url1.replace("#" , '')}&url2={url2.replace("#" , '')}&name1={name1}&name2={name2}")
 
     with st.spinner("Fetching the two files.."):
         config_h1 = get_config_h(url1)
